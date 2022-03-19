@@ -11,3 +11,166 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+nav {
+  background-color: wheat ;
+  height: 8vh;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+ 
+}
+.menu {
+  width: 35px;
+  height: 35px;
+  align-self: center;
+  cursor: pointer ;
+}
+nav > h1 {
+  align-self: center;
+}
+.logo {
+  width: 100px;
+  height: 100px;
+  
+}
+
+.wrapper {
+  height: max-content;
+  background-color: wheat;
+  padding: 12px;
+  border-radius: 30%;
+  margin-left: 20px;
+}
+
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: white;
+  gap : 15px ;
+  padding: 30px;
+  width: max-content;
+  position: absolute;
+  right: 0;
+  height: 92vh;
+}
+
+.sideBar > * {
+  text-decoration: none;
+  color : black ;
+  font-size: 1.3rem;
+  position: relative;
+}
+
+.sideBar > *::after {
+  content: "";
+  background-color: goldenrod;
+  height: 3px;
+  width: 0;
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: .6s ease;
+}
+.sideBar > *:hover::after {
+  width: 90%;
+}
+
+@keyframes changebg {
+  0% {
+    background-image: url("assets/1.jpg");
+  }
+  100% {
+    background-image: url("assets/2.jpg");
+  }
+}
+
+
+#home , #about, #ressources, #notfound {
+  animation: changebg 7s infinite  linear;
+  min-height: 92vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.65);
+  background-blend-mode: overlay;
+  color : white ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap : 30px ;
+  padding: 50px 0;
+}
+
+.accordion-item {
+  
+  color : black ;
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  
+}
+.accordion-title {
+  display: flex;
+  justify-content: space-between;
+  background-color: whitesmoke;
+  padding: 10px;
+  cursor: pointer;
+  
+}
+.accordion-content {
+  background-color: gainsboro;
+  padding: 10px;
+  
+}
+.accordion {
+  width: 60%;
+  border-radius: 10px;  
+  overflow : hidden ;
+}
+
+.btn {
+  padding: 10px;
+  background-color: wheat ;
+  border: none;
+  outline: none ;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  text-decoration: underline;
+}
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap : 15px ;
+  font-size: .8rem;
+}
+.userInfo img {
+  border-radius: 50%;
+  height: 100%;
+}
+
+@media screen and (max-width : 700px) 
+{
+  nav {
+    height: 100px;
+  }
+  .wrapper {
+    display: none;
+  }
+  .accordion {
+    width: 90%;
+  }
+}
+

@@ -22,8 +22,14 @@
 		"experimentalDecorators": true,
 		"resolveJsonModule": true,
 		"noEmit": true,
-		"baseUrl": "."
+		"baseUrl": ".",
+		"paths": {
+			"@*": ["./src/*"]
+		}
+	},
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
 	},
 	"exclude": ["node_modules"],
-	"include": ["./src/**/*.tsx", "./src/**/*.ts"]
+	"include": ["./src/**/*.tsx", "./src/**/*"]
 }

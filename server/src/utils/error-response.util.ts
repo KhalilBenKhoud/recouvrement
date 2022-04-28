@@ -1,6 +1,8 @@
+import { HttpStatus } from './base-response.util';
+
 export class ErrorResponse extends Error {
 	private readonly _statusCode?: number;
-	public httpCode: number;
+	public httpCode: HttpStatus;
 	get statusCode() {
 		return this._statusCode;
 	}
@@ -16,17 +18,20 @@ export class ErrorResponse extends Error {
 	}
 
 	static badRequest(message?: string) {
-		return new this(message || 'Bad request', 400);
+		return new this(message || 'Bad request', HttpStatus.BAD_REQUEST);
 	}
 
 	static notAuthorized(message?: string) {
-		return new this(message || "You're not authenticated, please login!", 401);
+		return new this(
+			message || "You're not authenticated, please login!",
+			HttpStatus.UNAUTHORIZED,
+		);
 	}
 
 	static forbidden(message?: string) {
 		return new this(
 			message || "You don't have permission to access this resource",
-			403,
+			HttpStatus.FORBIDDEN,
 		);
 	}
 
@@ -35,10 +40,13 @@ export class ErrorResponse extends Error {
 	}
 
 	static notFound(message?: string) {
-		return new this(message || 'Resource Not Found', 404);
+		return new this(message || 'Resource Not Found', HttpStatus.NOT_FOUND);
 	}
 
 	static internalServerError(message?: string) {
-		return new this(message || 'Internal Server Error', 500);
+		return new this(
+			message || 'Internal Server Error',
+			HttpStatus.INTERNAL_SERVER_ERROR,
+		);
 	}
 }

@@ -6,6 +6,7 @@ import {
 	RequestWithUser,
 	UserLoginDto,
 	UserRegistrationDto,
+	UserResponseDto,
 } from '@dto/auth.dto';
 import { AuthHelper } from '@helpers/auth.helper';
 import { AuthMiddleware } from '@middleware/auth.middleware';
@@ -25,7 +26,7 @@ export class AuthController implements IController {
 		private readonly _authMiddleware: AuthMiddleware,
 	) {
 		this._router = Router();
-		this.registerRoutes();
+		this.initRoutes();
 	}
 
 	@ValidateBody(UserLoginDto)
@@ -35,7 +36,10 @@ export class AuthController implements IController {
 			const user = await this._authService.login(userInput);
 			const accessToken = this._helper.getAccessToken(user);
 			this._helper.attachRefreshToken(res, user);
-			res.status(200).json({ success: true, body: { accessToken, user } });
+			res.status(200).json({
+				success: true,
+				body: { accessToken, user: new UserResponseDto(user) },
+			});
 		} catch (error: Error | unknown) {
 			next(error);
 		}
@@ -46,21 +50,35 @@ export class AuthController implements IController {
 		try {
 			const userInfo = req.body as UserRegistrationDto;
 			const user = await this._authService.register(userInfo);
-			// const accessToken = this._helper.getAccessToken(user);
-			// this._helper.attachRefreshToken(res, user);
-			// res.status(200).json({ success: true, body: { accessToken, user } });
+			const accessToken = this._helper.getAccessToken(user);
+			this._helper.attachRefreshToken(res, user);
+			res.status(200).json({
+				success: true,
+				body: {
+					accessToken,
+					user: {
+						firstName: user.firstName,
+						lastName: user.lastName,
+						email: user.email,
+						cin: user.cin,
+						role: user.role,
+					},
+				},
+			});
 		} catch (error) {
 			next(error);
 		}
 	}
 
 	private async logout(
-		_req: RequestWithUser,
+		req: RequestWithUser,
 		res: Response,
 		next: NextFunction,
 	) {
 		try {
+			req.user && (await this._authService.updateTokenVersion(req.user));
 			res.cookie('jid', '');
+			res.status(204).json({ success: true });
 		} catch (error) {
 			next(error);
 		}
@@ -86,25 +104,25 @@ export class AuthController implements IController {
 		next: NextFunction,
 	) {}
 
-	public registerRoutes(): void {
+	public initRoutes(): void {
 		this._router.post('/login', this.login.bind(this));
 		this._router.post('/register', this.register.bind(this));
 		this._router.post(
 			'/logout',
-			this._authMiddleware.authenticate,
+			this._authMiddleware.authenticate.bind(this._authMiddleware),
 			this.logout.bind(this),
 		);
 
 		// angular , accessToken, refrehsToken
 		this._router.post(
 			'/refresh-token',
-			this._authMiddleware.verifyRefreshToken,
+			this._authMiddleware.verifyRefreshToken.bind(this._authMiddleware),
 			this.refreshToken.bind(this),
 		);
 
 		this._router.post(
 			'/revoke-token',
-			this._authMiddleware.authenticate,
+			this._authMiddleware.authenticate.bind(this._authMiddleware),
 			this.revokeToken.bind(this),
 		);
 	}

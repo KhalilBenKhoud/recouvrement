@@ -1,9 +1,9 @@
-import { User } from '@entities/User';
+import { RoleEnum, User } from '@entities/User';
 import { Type } from 'class-transformer';
 import {
-	IsAlphanumeric,
-	IsDefined,
 	IsEmail,
+	IsNumber,
+	IsNumberString,
 	IsString,
 	Length,
 	MinLength,
@@ -22,8 +22,6 @@ export class UserRegistrationDto {
 	@IsEmail()
 	email: string;
 
-	@IsDefined()
-	@IsAlphanumeric()
 	@Type(() => Number)
 	cin: number;
 
@@ -33,8 +31,6 @@ export class UserRegistrationDto {
 }
 
 export class UserLoginDto {
-	@IsAlphanumeric()
-	@Length(8, 8)
 	@Type(() => Number)
 	cin: number;
 
@@ -43,6 +39,21 @@ export class UserLoginDto {
 	password: string;
 }
 
+export class UserResponseDto {
+	public firstName: string;
+	public lastName: string;
+	public email: string;
+	public cin: string;
+	public role: RoleEnum;
+
+	constructor(user: User) {
+		this.firstName = user.firstName;
+		this.lastName = user.lastName;
+		this.email = user.email;
+		this.cin = user.cin.toString();
+		this.role = user.role;
+	}
+}
 export interface RequestWithUser extends Request {
 	user?: User;
 }

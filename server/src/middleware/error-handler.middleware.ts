@@ -32,7 +32,7 @@ const errorHandler: ErrorRequestHandler = (
 		if (err instanceof JsonWebTokenError) {
 			return res
 				.status(HttpStatus.BAD_REQUEST)
-				.json({ success: false, error: 'database error' });
+				.json({ success: false, error: 'malformed token error' });
 		}
 	}
 

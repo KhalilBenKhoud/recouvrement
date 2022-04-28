@@ -1,15 +1,15 @@
 import { RequestWithUser } from '@dto/auth.dto';
-import { RoleEnum, User } from '@entities/User';
+import { User } from '@entities/User';
 import { ErrorResponse } from '@utils/error-response.util';
 import { NextFunction, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { delay, inject, injectable } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { Connection, Repository } from 'typeorm';
 
 @injectable()
 export class AuthMiddleware {
 	private readonly _userRepo: Repository<User>;
-	constructor(@inject(delay(() => Connection)) _connection: Connection) {
+	constructor(_connection: Connection) {
 		this._userRepo = _connection.getRepository(User);
 	}
 	async verifyRefreshToken(
@@ -40,17 +40,21 @@ export class AuthMiddleware {
 
 	async authenticate(req: RequestWithUser, _res: Response, next: NextFunction) {
 		try {
-			const authHeader = req.headers['Authorization'];
+			const authHeader = req.headers.authorization;
+			console.log(authHeader);
 			if (!authHeader) {
 				ErrorResponse.notAuthorized();
 			}
-			const [accessToken] = (<string>authHeader).split('Bearer ');
+			const [_, accessToken] = (<string>authHeader).split('Bearer ');
 			const payload = jwt.verify(
 				accessToken,
 				<string>process.env.ACCESS_TOKEN_SECRET,
 			) as JwtPayload;
 
-			const user = await this._userRepo.findOne(payload?.id);
+			const user = await this._userRepo.findOne({
+				id: payload?.id,
+				tokenVersion: payload?.tokenVersion,
+			});
 			if (!user) {
 				throw ErrorResponse.notAuthorized();
 			}

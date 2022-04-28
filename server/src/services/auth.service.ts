@@ -26,14 +26,19 @@ export class AuthService {
 		return user;
 	}
 	public async register(userInput: UserRegistrationDto) {
-		const user = await this._userRepository.findOne({ cin: userInput.cin });
+		const user = await this._userRepository.findOne({
+			where: [{ cin: userInput.cin }, { email: userInput.email }],
+		});
 		if (user) {
 			throw ErrorResponse.duplicateEntry();
 		}
-		return this._userRepository.insert(userInput);
+		userInput.password = await bcrypt.hash(userInput.password, 10);
+		return this._userRepository.save(userInput);
 	}
 
 	async updateTokenVersion(user: User) {
-		return user;
+		return this._userRepository.update(user.id, {
+			tokenVersion: user.tokenVersion + 1,
+		});
 	}
 }

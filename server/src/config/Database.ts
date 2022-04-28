@@ -9,8 +9,8 @@ const CONNECTION_OPTIONS: ConnectionOptions = {
 	username: process.env.user,
 	password: process.env.password,
 	database: 'recouvrement',
-	synchronize: true,
-	dropSchema: true,
+	// synchronize: true,
+	// dropSchema: true,
 	entities: ['src/entities/*.ts'],
 };
 

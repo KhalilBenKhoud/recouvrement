@@ -11,6 +11,7 @@ export class AuthService {
 	constructor(@inject(delay(() => Connection)) _connection: Connection) {
 		this._userRepository = _connection.getRepository(User);
 	}
+
 	public async login(userInput: UserLoginDto): Promise<User> {
 		const user = await this._userRepository.findOne({ cin: +userInput.cin });
 		if (!user) {
@@ -37,7 +38,8 @@ export class AuthService {
 	}
 
 	async updateTokenVersion(user: User) {
-		return this._userRepository.update(user.id, {
+		return this._userRepository.save({
+			id: user.id,
 			tokenVersion: user.tokenVersion + 1,
 		});
 	}

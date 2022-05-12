@@ -11,6 +11,7 @@ import {
 import { AuthHelper } from '@helpers/auth.helper';
 import { AuthMiddleware } from '@middleware/auth.middleware';
 import { ValidateBody } from '@validators/request.validator';
+import { HttpStatus } from '@utils/base-response.util';
 
 @singleton()
 export class AuthController implements IController {
@@ -36,7 +37,8 @@ export class AuthController implements IController {
 			const user = await this._authService.login(userInput);
 			const accessToken = this._helper.getAccessToken(user);
 			this._helper.attachRefreshToken(res, user);
-			res.status(200).json({
+
+			res.status(HttpStatus.OK).json({
 				success: true,
 				body: { accessToken, user: new UserResponseDto(user) },
 			});
@@ -52,17 +54,11 @@ export class AuthController implements IController {
 			const user = await this._authService.register(userInfo);
 			const accessToken = this._helper.getAccessToken(user);
 			this._helper.attachRefreshToken(res, user);
-			res.status(200).json({
+			res.status(HttpStatus.OK).json({
 				success: true,
 				body: {
 					accessToken,
-					user: {
-						firstName: user.firstName,
-						lastName: user.lastName,
-						email: user.email,
-						cin: user.cin,
-						role: user.role,
-					},
+					user: new UserResponseDto(user),
 				},
 			});
 		} catch (error) {
@@ -78,7 +74,7 @@ export class AuthController implements IController {
 		try {
 			req.user && (await this._authService.updateTokenVersion(req.user));
 			res.cookie('jid', '');
-			res.status(204).json({ success: true });
+			res.status(HttpStatus.NO_CONTENT).send();
 		} catch (error) {
 			next(error);
 		}
@@ -90,9 +86,13 @@ export class AuthController implements IController {
 		next: NextFunction,
 	) {
 		try {
-			if (req.user) {
-				const user = await this._authService.updateTokenVersion(req.user);
-			}
+			const user = await this._authService.updateTokenVersion(req.user!);
+			const accessToken = this._helper.getAccessToken(user);
+			this._helper.attachRefreshToken(res, user);
+			res.status(HttpStatus.OK).json({
+				success: true,
+				body: { accessToken },
+			});
 		} catch (error) {
 			next(error);
 		}
@@ -102,14 +102,21 @@ export class AuthController implements IController {
 		req: RequestWithUser,
 		res: Response,
 		next: NextFunction,
-	) {}
+	) {
+		try {
+			await this._authService.updateTokenVersion(req.user!);
+			res.status(HttpStatus.NO_CONTENT).send();
+		} catch (error) {
+			next(error);
+		}
+	}
 
 	public initRoutes(): void {
 		this._router.post('/login', this.login.bind(this));
 		this._router.post('/register', this.register.bind(this));
 		this._router.post(
 			'/logout',
-			this._authMiddleware.authenticate.bind(this._authMiddleware),
+			this._authMiddleware.authenticate.call(this._authMiddleware),
 			this.logout.bind(this),
 		);
 
@@ -122,7 +129,7 @@ export class AuthController implements IController {
 
 		this._router.post(
 			'/revoke-token',
-			this._authMiddleware.authenticate.bind(this._authMiddleware),
+			this._authMiddleware.authenticate.call(this._authMiddleware),
 			this.revokeToken.bind(this),
 		);
 	}

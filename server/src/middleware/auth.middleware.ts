@@ -1,6 +1,7 @@
 import { RequestWithUser } from '@dto/auth.dto';
-import { User } from '@entities/User';
+import { RoleEnum, User } from '@entities/User';
 import { ErrorResponse } from '@utils/error-response.util';
+import { AsyncRequestHandler } from '@validators/request.validator';
 import { NextFunction, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { injectable } from 'tsyringe';
@@ -17,6 +18,7 @@ export class AuthMiddleware {
 		_res: Response,
 		next: NextFunction,
 	) {
+		console.log('trying to refresh token');
 		try {
 			const refreshToken = req.cookies?.jid;
 			if (!refreshToken) {
@@ -24,10 +26,13 @@ export class AuthMiddleware {
 			}
 			const payload = jwt.verify(
 				refreshToken,
-				<string>process.env.REFRESH_TOKEN_KEY,
+				<string>process.env.REFRESH_TOKEN_SECRET,
 			) as jwt.JwtPayload;
 
-			const user = await this._userRepo.findOne(payload?.id);
+			const user = await this._userRepo.findOne({
+				id: payload?.id,
+				tokenVersion: payload?.tokenVersion,
+			});
 			if (!user) {
 				throw ErrorResponse.notAuthorized();
 			}
@@ -38,31 +43,36 @@ export class AuthMiddleware {
 		}
 	}
 
-	async authenticate(req: RequestWithUser, _res: Response, next: NextFunction) {
-		try {
-			const authHeader = req.headers.authorization;
-			console.log(authHeader);
-			if (!authHeader) {
-				ErrorResponse.notAuthorized();
-			}
-			const [_, accessToken] = (<string>authHeader).split('Bearer ');
-			const payload = jwt.verify(
-				accessToken,
-				<string>process.env.ACCESS_TOKEN_SECRET,
-			) as JwtPayload;
+	authenticate(role?: RoleEnum) {
+		return async (req: RequestWithUser, _res: Response, next: NextFunction) => {
+			try {
+				const authHeader = req.headers.authorization;
+				console.log(authHeader);
+				if (!authHeader) {
+					throw ErrorResponse.notAuthorized();
+				}
+				const [_, accessToken] = (<string>authHeader).split('Bearer ');
+				const payload = jwt.verify(
+					accessToken,
+					<string>process.env.ACCESS_TOKEN_SECRET,
+				) as JwtPayload;
 
-			const user = await this._userRepo.findOne({
-				id: payload?.id,
-				tokenVersion: payload?.tokenVersion,
-			});
-			if (!user) {
-				throw ErrorResponse.notAuthorized();
-			}
-			req.user = user;
+				const user = await this._userRepo.findOne({
+					id: payload?.id,
+					tokenVersion: payload?.tokenVersion,
+				});
+				if (!user) {
+					throw ErrorResponse.notAuthorized();
+				}
+				if (typeof role === 'number' && user.role !== role) {
+					throw ErrorResponse.forbidden();
+				}
+				req.user = user;
 
-			next();
-		} catch (error) {
-			next(error);
-		}
+				next();
+			} catch (error) {
+				next(error);
+			}
+		};
 	}
 }

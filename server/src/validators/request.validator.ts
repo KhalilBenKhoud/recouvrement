@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { HttpStatus } from '@utils/base-response.util';
 import { NextFunction, Request, Response, RequestHandler } from 'express';
 
-interface AsyncRequestHandler {
+export interface AsyncRequestHandler {
 	(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 
@@ -29,6 +29,7 @@ function validationFactory<T>(
 			const plain = req[source];
 
 			const errors = await validate(plainToInstance(model, plain));
+
 			if (!!errors.length) {
 				res.status(HttpStatus.BAD_REQUEST).json({
 					success: false,

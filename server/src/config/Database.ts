@@ -4,12 +4,12 @@ dotenv.config();
 
 const CONNECTION_OPTIONS: ConnectionOptions = {
 	type: 'postgres',
-	host: process.env.host,
-	port: 5432,
-	username: process.env.user,
-	password: process.env.password,
-	database: 'recouvrement',
-	// synchronize: true,
+	host: process.env.POSTGRES_HOST,
+	port: +(<string>process.env.POSTGRES_PORT) ?? 5432,
+	username: process.env.POSTGRES_USER,
+	password: process.env.POSTGRES_PASSWORD,
+	database: process.env.POSTGRES_DB,
+	synchronize: true,
 	// dropSchema: true,
 	entities: ['src/entities/*.ts'],
 };
@@ -20,7 +20,6 @@ export class Database {
 
 	static async getConnection(): Promise<Connection> {
 		if (this.connectionManager.has('default')) {
-			console.log('has default');
 			this.connection = this.connectionManager.get('default');
 		} else {
 			this.connection = await this.connectionManager

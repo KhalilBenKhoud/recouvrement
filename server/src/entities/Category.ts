@@ -1,12 +1,5 @@
-import {
-	Column,
-	Entity,
-	ManyToOne,
-	OneToMany,
-	PrimaryGeneratedColumn,
-} from "typeorm";
-import { Debt } from "./Debt";
-import { BaseEntity } from "./utils/BaseEntity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Invoice } from './Invoice';
 
 @Entity()
 export class Category {
@@ -16,6 +9,12 @@ export class Category {
 	@Column()
 	label: string;
 
-	@OneToMany(() => Debt, (debt) => debt.category)
-	debts: Debt[];
+	@Column()
+	incrementPeriod: Date;
+
+	@Column()
+	interestRate: Number;
+
+	@OneToMany(() => Invoice, (invoice) => invoice.category)
+	debts: Invoice[];
 }

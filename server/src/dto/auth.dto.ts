@@ -1,39 +1,44 @@
 import { RoleEnum, User } from '@entities/User';
 import { Type } from 'class-transformer';
 import {
+	IsDefined,
 	IsEmail,
 	IsNumber,
-	IsNumberString,
 	IsString,
-	Length,
 	MinLength,
 } from 'class-validator';
 import { Request } from 'express';
+import { IsValidCin } from './../validators/global.validator';
 
 export class UserRegistrationDto {
+	@IsDefined()
 	@IsString()
 	@MinLength(3)
 	firstName: string;
 
+	@IsDefined()
 	@IsString()
 	@MinLength(3)
 	lastName: string;
 
+	@IsDefined()
 	@IsEmail()
 	email: string;
 
-	@Type(() => Number)
+	@IsValidCin()
 	cin: number;
 
+	@IsDefined()
 	@IsString()
 	@MinLength(6)
 	password: string;
 }
 
 export class UserLoginDto {
-	@Type(() => Number)
+	@IsValidCin()
 	cin: number;
 
+	@IsDefined()
 	@IsString()
 	@MinLength(6)
 	password: string;

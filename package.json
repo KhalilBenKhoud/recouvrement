@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "",
-		"start:dev": "concurrently \"cd server && yarn db:run && yarn dev:watch\" \"cd client && yarn start\""
+		"start:dev": "concurrently \"cd server && yarn dev:watch\" \"cd client && yarn start\""
 	},
 	"repository": {
 		"type": "git",

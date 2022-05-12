@@ -1,5 +1,6 @@
-import { Column, Entity } from "typeorm";
-import { BaseEntity } from "./utils/BaseEntity";
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { User } from './User';
+import { BaseEntity } from './utils/BaseEntity';
 
 @Entity()
 export class Complaint extends BaseEntity {
@@ -7,4 +8,6 @@ export class Complaint extends BaseEntity {
 	title: string;
 	@Column()
 	description: string;
+	@ManyToOne(() => User, (user) => user.complaints)
+	owner: User;
 }

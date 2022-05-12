@@ -2,9 +2,9 @@
 	"name": "recouvrement",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "",
 	"scripts": {
-		"start": "",
+		"start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
 		"start:dev": "concurrently \"cd server && yarn dev:watch\" \"cd client && yarn start\""
 	},
 	"repository": {

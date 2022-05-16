@@ -17,6 +17,8 @@ const CreateAccount = () => {
         <form>
         <Input label="CIN" type="text" placeholder="CIN" />
         <Input label="Email" type="email" placeholder="Email" />
+        <Input label="Téléphone" type="text" placeholder="Téléphone" />
+        <Input label="Adresse" type="text" placeholder="Adresse" />
         <Input label="Password" type="password" placeholder="password" />
         <Input label="Confirm password" type="password" placeholder="password" />
         <div>

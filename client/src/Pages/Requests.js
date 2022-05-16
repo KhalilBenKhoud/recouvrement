@@ -1,5 +1,5 @@
 import {useState} from 'react'
-
+import SubmitButton from '../components/SubmitButton'
 
 const Requests = () => {
     
@@ -24,11 +24,12 @@ const Requests = () => {
          }
      }/>
      </span>
-     <button className='submitButton' onClick={ (e) => {
+     <SubmitButton content="Déposer une plainte" callback={ (e) => {
          e.preventDefault()
          setRequests([...requests, {title:object , content:text} ])
+        
           } }
-         > Déposer une plainte</button>
+         /> 
 
      <div className='plaintes'>
      <h1>Anciennes plaintes :</h1>

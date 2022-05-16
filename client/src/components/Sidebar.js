@@ -11,14 +11,16 @@ const Sidebar = () => {
   
     return (
     <div className='sidebar'>
+      <a href='https://www.tunisietelecom.tn/Fr' target="_blank">
      <img src={logo} alt="logo" className='logo'/>
+     </a>
      <ul>
       <li >
       <NavLink  to="/" className= "navigation"   >
-      <img src={HomeIcon} alt="home icon" className='icon'/> Accueil</NavLink></li>
+      <img src={HomeIcon} alt="home icon" className='icon'/> FAQ</NavLink></li>
       <li><NavLink className="navigation" to="/about">
       <img src={AboutIcon} alt="home icon" className='icon'/>
-        A propos</NavLink></li>
+        Factures</NavLink></li>
       <li><NavLink className="navigation" to="/dashboard">
       <img src={DashboardIcon} alt="dashboard icon" className='icon'/>  
           Dashboard</NavLink></li>

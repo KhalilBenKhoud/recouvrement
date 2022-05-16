@@ -8,6 +8,7 @@ const Input = (props) => {
          id='in'
          type = {props.type}
          placeholder = {props.placeholder}
+         onChange={props.callback}
          required
        />
     </div>

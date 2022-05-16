@@ -17,7 +17,9 @@ const Login = () => {
          <form>
           <Input label="CIN" type="text" placeholder="CIN" />
           <Input label="Password" type="password" placeholder="password" />
-           <SubmitButton content="Login" />
+           <SubmitButton content="Login" 
+            callback = { ()=>console.log("login 1") }
+           />
           </form>
           <hr />
            <SocialButton>

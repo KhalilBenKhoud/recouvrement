@@ -49,8 +49,8 @@ axiosClient.interceptors.response.use(
 			config._retry = true;
 			try {
 				const { accessToken } = await AuthService.refreshToken();
-
-				localStorage.setItem('accessToken', accessToken);
+				
+				accessToken && localStorage.setItem('accessToken', accessToken);
 			} catch (_error) {
 				if (_error.response && _error.response.data) {
 					return Promise.reject(_error.response.data);

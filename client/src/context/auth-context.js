@@ -4,11 +4,17 @@ import {
 	useState,
 	useCallback,
 	useEffect,
+	useRef,
 } from 'react';
 import { AuthService } from '../services/AuthService';
 
 function getUserFromAccessToken(accessToken) {
-	return window.atob(accessToken.split('.')[1]);
+	return JSON.parse(window.atob(accessToken.split('.')[1]));
+}
+
+function calculateDelayFromJwt(object) {
+	console.log(object.exp);
+	return object.exp * 1000 - Date.now() - 10000;
 }
 
 const AuthContext = createContext();
@@ -17,6 +23,9 @@ export function AuthContextProvider({ children }) {
 	const [accessToken, setAccessToken] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
+
+	const refreshTimeout = useRef();
+	const isMounted = useRef(false);
 
 	const requestRefreshToken = useCallback(async () => {
 		try {
@@ -32,8 +41,30 @@ export function AuthContextProvider({ children }) {
 	}, []);
 
 	useEffect(() => {
-		requestRefreshToken();
-	}, [requestRefreshToken]);
+		const subscribeAutomaticTokenRefresh = async (delay) => {
+			if (!refreshTimeout.current) {
+				refreshTimeout.current = window.setTimeout(async () => {
+					await requestRefreshToken();
+				}, delay);
+			}
+		};
+
+		if (!isMounted.current) {
+			console.log('try getting access token on page refresh');
+			setIsLoading(true);
+			requestRefreshToken();
+			isMounted.current = true;
+		} else if (!!accessToken) {
+			console.log('automatic refresh subscription');
+			const delay = calculateDelayFromJwt(getUserFromAccessToken(accessToken));
+			if (delay && !isNaN(delay)) {
+				subscribeAutomaticTokenRefresh(delay);
+			}
+		}
+		return () => {
+			window.clearTimeout(refreshTimeout.current);
+		};
+	}, [requestRefreshToken, accessToken]);
 
 	const login = useCallback(async (credentials) => {
 		try {

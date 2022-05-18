@@ -28,7 +28,7 @@ export class AuthMiddleware {
 				refreshToken,
 				<string>process.env.REFRESH_TOKEN_SECRET,
 			) as jwt.JwtPayload;
-
+			console.log(payload);
 			const user = await this._userRepo.findOne({
 				id: payload?.id,
 				tokenVersion: payload?.tokenVersion,
@@ -47,7 +47,6 @@ export class AuthMiddleware {
 		return async (req: RequestWithUser, _res: Response, next: NextFunction) => {
 			try {
 				const authHeader = req.headers.authorization;
-				console.log(authHeader);
 				if (!authHeader) {
 					throw ErrorResponse.notAuthorized();
 				}

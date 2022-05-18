@@ -8,17 +8,45 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Requests from './pages/Requests';
+import { GuestOnly, RequireAuth } from './hoc';
 
 function App() {
 	return (
 		<div className='App'>
 			<Routes>
-				
-				<Route path='/login' element={<Login />} />
-				<Route path='/create' element={<CreateAccount />} />
-				<Route path='/forgot' element={<ForgotPassword />} />
+				<Route
+					path='/login'
+					element={
+						<GuestOnly>
+							<Login />
+						</GuestOnly>
+					}
+				/>
+				<Route
+					path='/create'
+					element={
+						<GuestOnly>
+							<CreateAccount />
+						</GuestOnly>
+					}
+				/>
+				<Route
+					path='/forgot'
+					element={
+						<GuestOnly>
+							<ForgotPassword />
+						</GuestOnly>
+					}
+				/>
 
-				<Route path='/' element={<Layout />}>
+				<Route
+					path='/'
+					element={
+						<RequireAuth>
+							<Layout />
+						</RequireAuth>
+					}
+				>
 					<Route path='' exact element={<Home />} />
 					<Route path='dashboard' element={<Dashboard />} />
 					<Route path='about' element={<About />} />

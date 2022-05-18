@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-const SubmitButton = (props) => {
-  return (
-    <button className='submitButton' onClick={props.callback}>
-        {props.content}
-    </button>
-  )
-}
+const SubmitButton = ({ content, onClick }) => {
+	return (
+		<button className='submitButton' onClick={onClick}>
+			{content}
+		</button>
+	);
+};
 
-export default SubmitButton
+export default SubmitButton;

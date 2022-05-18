@@ -40,7 +40,7 @@ export class AuthController implements IController {
 
 			res.status(HttpStatus.OK).json({
 				success: true,
-				body: { accessToken, user: new UserResponseDto(user) },
+				body: { accessToken },
 			});
 		} catch (error: Error | unknown) {
 			next(error);
@@ -58,7 +58,6 @@ export class AuthController implements IController {
 				success: true,
 				body: {
 					accessToken,
-					user: new UserResponseDto(user),
 				},
 			});
 		} catch (error) {

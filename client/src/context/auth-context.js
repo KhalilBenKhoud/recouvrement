@@ -1,44 +1,92 @@
-import { createContext, useContext, useState } from 'react';
+import {
+	createContext,
+	useContext,
+	useState,
+	useCallback,
+	useEffect,
+} from 'react';
 import { AuthService } from '../services/AuthService';
+
+function getUserFromAccessToken(accessToken) {
+	return window.atob(accessToken.split('.')[1]);
+}
 
 const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
-	const [accessToken, setAccessToken] = useState(
-		null
-	);
-	const [user, setUser] = useState(localStorage.getItem('user'));
+	const [accessToken, setAccessToken] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
-	const [errors, setErrors] = useState(null);
-	const login = async (credentials) => {
+	const [error, setError] = useState(null);
+
+	const requestRefreshToken = useCallback(async () => {
 		try {
 			setIsLoading(true);
-			const res = await AuthService.login(credentials);
-			//localStorage.setItem('user', res.user);
-			//localStorage.setItem('accessToken', res.accessToken);
-			setUser(res.user);
-			setAccessToken(res.accessToken);
-			setIsLoading(false);
+			const { accessToken } = await AuthService.refreshToken();
+			console.log(accessToken);
+			setAccessToken(accessToken);
 		} catch (error) {
-			setErrors([...errors, error.message]);
+			setError();
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, []);
 
-	const register = () => {};
+	useEffect(() => {
+		requestRefreshToken();
+	}, [requestRefreshToken]);
 
-	const logout = () => {};
+	const login = useCallback(async (credentials) => {
+		try {
+			setIsLoading(true);
+			const { accessToken } = await AuthService.login(credentials);
+			setAccessToken(accessToken);
+		} catch (error) {
+			console.log(error);
+			setError(error.response?.data?.error ?? 'Unknown error');
+			return false;
+		} finally {
+			setIsLoading(false);
+		}
+		return true;
+	}, []);
+
+	const register = useCallback(async (userInput) => {
+		try {
+			setIsLoading(true);
+			const { accessToken } = await AuthService.register(userInput);
+			setAccessToken(accessToken);
+		} catch (error) {
+			console.log(error);
+			setError(error.response?.data?.error ?? 'Unknown error');
+			return false;
+		} finally {
+			setIsLoading(false);
+		}
+		return true;
+	}, []);
+
+	const logout = useCallback(async () => {
+		try {
+			setIsLoading(true);
+			await AuthService.logout(accessToken);
+			setAccessToken(null);
+		} catch (error) {
+			console.log(error);
+			//setErrors();
+		} finally {
+			setIsLoading(false);
+		}
+	}, [accessToken]);
 
 	const value = {
-		isAuth: !!accessToken && !!user,
-		user,
+		isAuth: !!accessToken,
+		user: !!accessToken && getUserFromAccessToken(accessToken),
 		accessToken,
 		isLoading,
 		login,
 		register,
 		logout,
-		errors,
+		error,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

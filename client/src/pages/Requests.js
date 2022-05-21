@@ -24,7 +24,7 @@ const Requests = () => {
          }
      }/>
      </span>
-     <SubmitButton content="Déposer une plainte" callback={ (e) => {
+     <SubmitButton content="Déposer une plainte" onClick={ (e) => {
          e.preventDefault()
          setRequests([...requests, {title:object , content:text} ])
         
@@ -34,7 +34,7 @@ const Requests = () => {
      <div className='plaintes'>
      <h1>Anciennes plaintes :</h1>
       {
-        requests.map(n => <div className='old-request'>
+        requests.map(n => <div className='old-request' >
             <h1 className='request-title'>{n.title}</h1> <br/>
             {n.content}</div>)
       

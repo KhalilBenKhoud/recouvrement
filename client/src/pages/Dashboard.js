@@ -20,21 +20,25 @@ const Dashboard = () => {
      <div className='service-container' >
     <div className='dates'>
     <h1>Les dates mentionnées</h1>
-    <Input label="Date de facturation" type="date" placeholder="" />
-    <Input label="Délai de créance" type="date" placeholder="" />
+     <label>Date de facturation</label>
+    <input id="in"  type="date" placeholder="" />
+     <label>Délai de créance</label>
+    <input id="in" type="date" placeholder="" />
     <SubmitButton content="extraire les tranches" />
     </div>   
     <div className='payment'>
       <h1>Payement</h1>
-    <Input label="Montant de la créance" type="number" placeholder="" 
-     callback = { (e) => {
+    <span>Montant de la créance</span>
+    <input id="in"  type="number" placeholder="" 
+     onChange = { (e) => {
       setMontant(e.target.value)
       console.log(e.target.value)
      }    
      }
     />
-    <Input label="Taux d'intérêt % " type="number" placeholder=""
-     callback= { (e) => {
+    <span>Taux d'intérêt %</span>
+    <input id="in" type="number" placeholder=""
+     onChange= { (e) => {
         setInteret(e.target.value)
      }
      } />

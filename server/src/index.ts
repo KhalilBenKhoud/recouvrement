@@ -1,11 +1,11 @@
-import { ClientController } from './controllers/client.controller';
 import 'reflect-metadata';
 import express from 'express';
 import cors, { CorsOptions } from 'cors';
 import { Server } from 'http';
 import { container } from 'tsyringe';
 
-import { Database } from '@config/database';
+import { Database } from '@config/Database'
+import { ClientController } from '@controllers/client.controller';
 import { MainController } from '@controllers/main.controller';
 import { AuthController } from '@controllers/auth.controller';
 import { errorHandler } from '@middleware/error-handler.middleware';

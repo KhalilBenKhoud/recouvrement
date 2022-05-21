@@ -344,7 +344,7 @@ code {
   border-radius: 7px;
   display: flex;
   flex-direction: column;
-  gap : 15px;
+  gap : 10px;
 }
 .service-container {
   display: flex;
@@ -462,7 +462,12 @@ code {
 
 .dropdown > *{
   cursor: pointer;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
 }
 .dropdown > *:hover {
- text-decoration: underline;
+ 
 }
+

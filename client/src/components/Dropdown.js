@@ -5,7 +5,7 @@ const Dropdown = () => {
 	const { logout } = useAuth();
 	return (
 		<div className='dropdown'>
-			<div>Profile</div>
+			<button>Profile</button>
 			<button
 				onClick={async (e) => {
 					e.preventDefault();

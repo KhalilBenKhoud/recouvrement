@@ -111,6 +111,7 @@ export function AuthContextProvider({ children }) {
 
 	const value = {
 		isAuth: !!accessToken,
+		isMounted: isMounted.current,
 		user: !!accessToken && getUserFromAccessToken(accessToken),
 		accessToken,
 		isLoading,

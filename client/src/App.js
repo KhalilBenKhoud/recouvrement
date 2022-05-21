@@ -6,7 +6,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
-import About from './pages/About';
+import Invoices from './pages/Invoices';
 import Requests from './pages/Requests';
 import { GuestOnly, RequireAuth } from './hoc';
 
@@ -49,7 +49,7 @@ function App() {
 				>
 					<Route path='' exact element={<Home />} />
 					<Route path='dashboard' element={<Dashboard />} />
-					<Route path='about' element={<About />} />
+					<Route path='invoices' element={<Invoices />} />
 					<Route path='requests' element={<Requests />} />
 				</Route>
 

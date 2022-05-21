@@ -3,7 +3,7 @@ import loginImg from '../assets/login-office.jpeg';
 import Input from '../components/Input';
 import github from '../assets/github.png';
 import twitter from '../assets/twitter.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SocialButton from '../components/SocialButton';
 import SubmitButton from '../components/SubmitButton';
 import { useAuth } from '../context/auth-context';
@@ -12,13 +12,16 @@ const Login = () => {
 	const [cin, setCin] = useState(null);
 	const [password, setPassword] = useState(null);
 	const navigateTo = useNavigate();
+	const location = useLocation();
+	const from = location.state?.from?.pathname || '/';
 
 	const loginHandler = async (e) => {
 		e.preventDefault();
 		if (!!cin && !!password) {
 			console.log(cin, password);
 			if (await login({ cin, password })) {
-				navigateTo('/');
+				console.log(from);
+				navigateTo(from);
 			} else {
 				console.log(error);
 			}

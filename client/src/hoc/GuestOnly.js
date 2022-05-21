@@ -1,9 +1,12 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/auth-context';
 export default function GuestOnly({ children }) {
-	const { isAuth } = useAuth();
+	const { isAuth, isLoading } = useAuth();
 
-	if (isAuth) {
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+	if (isAuth && !isLoading) {
 		return <Navigate to='/' />;
 	}
 

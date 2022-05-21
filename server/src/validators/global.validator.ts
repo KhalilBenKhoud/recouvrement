@@ -2,6 +2,8 @@ import {
 	registerDecorator,
 	ValidationArguments,
 	buildMessage,
+	ValidateIf,
+	ValidationOptions,
 } from 'class-validator';
 
 export function IsValidCin() {
@@ -25,4 +27,11 @@ export function IsValidCin() {
 			},
 		});
 	};
+}
+
+export function IsNullable(validationOptions?: ValidationOptions) {
+	return ValidateIf(
+		(_object, value) => value !== null && value !== undefined,
+		validationOptions,
+	);
 }

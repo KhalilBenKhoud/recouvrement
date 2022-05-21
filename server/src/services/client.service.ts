@@ -40,7 +40,6 @@ export class ClientService {
 			}
 		}
 		const options: FindManyOptions = {
-			relations: ['user'],
 			where: whereConditions,
 			order: {
 				createdAt: 'DESC',

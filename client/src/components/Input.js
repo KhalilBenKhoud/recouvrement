@@ -1,18 +1,21 @@
-import React from 'react'
+import React from 'react';
 
-const Input = (props) => {
-  return (
-    <div>
-       <label htmlFor='in'>{props.label}</label> <br />
-       <input 
-         id='in'
-         type = {props.type}
-         placeholder = {props.placeholder}
-         onChange={props.callback}
-         required
-       />
-    </div>
-  )
-}
+const Input = ({ label, type, placeholder, onChange }) => {
+	return (
+		<div>
+			<label htmlFor='in'>{label}</label> <br />
+			<input
+				id='in'
+				type={type}
+				placeholder={placeholder}
+				onChange={(e) => {
+					e.preventDefault();
+					onChange(e.target.value);
+				}}
+				required
+			/>
+		</div>
+	);
+};
 
-export default Input
+export default Input;

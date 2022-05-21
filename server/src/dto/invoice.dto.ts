@@ -22,7 +22,7 @@ export class InvoiceResponseDto {
 
 	currency: number;
 
-	description: string;
+	title: string;
 
 	status: InvoiceStatus;
 

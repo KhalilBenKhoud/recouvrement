@@ -31,10 +31,10 @@ const main = async () => {
 		app.use([express.json(), cors(options), cookieParser()]);
 
 		//Routes
-		app.use('/api/v1', container.resolve(MainController).router);
 		app.use('/api/v1/auth', container.resolve(AuthController).router);
 		app.use('/api/v1/client', container.resolve(ClientController).router);
 		app.use('/api/v1/admin', container.resolve(AdminController).router);
+		app.use('/api/v1', container.resolve(MainController).router);
 		app.use(errorHandler);
 
 		//running the app

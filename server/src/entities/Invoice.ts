@@ -25,8 +25,8 @@ export class Invoice extends BaseEntity {
 	@Column({ default: Currency.TND, enum: Currency, type: 'integer' })
 	currency: number;
 
-	@Column({ nullable: true })
-	description: string;
+	@Column()
+	title: string;
 
 	@Column()
 	status: InvoiceStatus;

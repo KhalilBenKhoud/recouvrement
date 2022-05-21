@@ -22,8 +22,19 @@ export class AuthHelper {
 	}
 
 	private generateToken(user: User, secret: string, expiresIn: string): string {
-		return jwt.sign({ id: user.id, tokenVersion: user.tokenVersion }, secret, {
-			expiresIn,
-		});
+		return jwt.sign(
+			{
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				role: user.role,
+				email: user.email,
+				tokenVersion: user.tokenVersion,
+			},
+			secret,
+			{
+				expiresIn,
+			},
+		);
 	}
 }

@@ -4,7 +4,7 @@ import cors, { CorsOptions } from 'cors';
 import { Server } from 'http';
 import { container } from 'tsyringe';
 
-import { Database } from '@config/Database'
+import { Database } from '@config/Database';
 import { ClientController } from '@controllers/client.controller';
 import { MainController } from '@controllers/main.controller';
 import { AuthController } from '@controllers/auth.controller';
@@ -31,10 +31,10 @@ const main = async () => {
 		app.use([express.json(), cors(options), cookieParser()]);
 
 		//Routes
+		app.use('/api/v1', container.resolve(MainController).router);
 		app.use('/api/v1/auth', container.resolve(AuthController).router);
 		app.use('/api/v1/client', container.resolve(ClientController).router);
 		app.use('/api/v1/admin', container.resolve(AdminController).router);
-		app.use('/api/v1', container.resolve(MainController).router);
 		app.use(errorHandler);
 
 		//running the app

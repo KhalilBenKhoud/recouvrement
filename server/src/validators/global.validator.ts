@@ -6,24 +6,24 @@ import {
 	ValidationOptions,
 } from 'class-validator';
 
-export function IsValidCin() {
-	return function (object: Object, propertyName: string) {
+export function IsValidDateRange() {
+	return function (object: any, propertyName: string) {
 		registerDecorator({
-			name: 'isValidCin',
+			name: 'isValidDateRange',
 			target: object.constructor,
 			propertyName: propertyName,
 			validator: {
-				validate(value: string, _args: ValidationArguments) {
-					return (
-						!!value &&
-						typeof value === 'string' &&
-						typeof +value === 'number' &&
-						value.trim().length === 8
-					);
+				validate(json: any, _args: ValidationArguments) {
+					const value = JSON.parse(json);
+					const res =
+						!value ||
+						((value.minDate === null || value.minDate instanceof Date) &&
+							(value.maxDate === null || value.maxDate instanceof Date));
+					console.log(typeof value);
+					console.log(value['minDate']);
+					return res;
 				},
-				defaultMessage: buildMessage(
-					(eachPrefix) => `${eachPrefix} property must be a valid cin`,
-				),
+				defaultMessage: buildMessage((_) => 'Invalid date range'),
 			},
 		});
 	};

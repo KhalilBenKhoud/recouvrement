@@ -27,7 +27,6 @@ function validationFactory<T>(
 
 			const [req, res] = arguments;
 			const plain = req[source];
-			console.log(plain);
 
 			const errors = await validate(plainToInstance(model, plain));
 

@@ -10,7 +10,7 @@ const CONNECTION_OPTIONS: ConnectionOptions = {
 	password: process.env.POSTGRES_PASSWORD,
 	database: process.env.POSTGRES_DB,
 	synchronize: true,
-	// dropSchema: true,
+	//dropSchema: true,
 	entities: ['src/entities/*.ts'],
 };
 

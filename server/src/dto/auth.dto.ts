@@ -3,12 +3,12 @@ import { Type } from 'class-transformer';
 import {
 	IsDefined,
 	IsEmail,
+	IsIdentityCard,
 	IsNumber,
 	IsString,
 	MinLength,
 } from 'class-validator';
 import { Request } from 'express';
-import { IsValidCin } from './../validators/global.validator';
 
 export class UserRegistrationDto {
 	@IsDefined()
@@ -25,8 +25,8 @@ export class UserRegistrationDto {
 	@IsEmail()
 	email: string;
 
-	@IsValidCin()
-	cin: number;
+	@IsIdentityCard('ar-TN')
+	cin: string;
 
 	@IsDefined()
 	@IsString()
@@ -35,8 +35,8 @@ export class UserRegistrationDto {
 }
 
 export class UserLoginDto {
-	@IsValidCin()
-	cin: number;
+	@IsIdentityCard('ar-TN')
+	cin: string;
 
 	@IsDefined()
 	@IsString()

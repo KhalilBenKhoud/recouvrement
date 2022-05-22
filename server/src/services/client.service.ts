@@ -34,8 +34,8 @@ export class ClientService {
 			}
 			if (filters.dateRange) {
 				whereConditions.createdAt = In<Date>([
-					filters.dateRange.minDate,
-					filters.dateRange.maxDate,
+					filters.dateRange.minDate!,
+					filters.dateRange.maxDate!,
 				]);
 			}
 		}

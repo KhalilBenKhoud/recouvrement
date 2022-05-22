@@ -13,7 +13,7 @@ export class AuthService {
 	}
 
 	public async login(userInput: UserLoginDto): Promise<User> {
-		const user = await this._userRepository.findOne({ cin: +userInput.cin });
+		const user = await this._userRepository.findOne({ cin: userInput.cin });
 		if (!user) {
 			throw ErrorResponse.notAuthorized('Wrong credentials!');
 		}

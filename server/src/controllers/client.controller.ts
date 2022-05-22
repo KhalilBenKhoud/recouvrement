@@ -4,7 +4,7 @@ import {
 	ComplaintResponseDto,
 	CreateComplaintDto,
 } from './../dto/complaint.dto';
-import { IRouter, NextFunction, Request, Response, Router } from 'express';
+import { IRouter, NextFunction, Response, Router } from 'express';
 import { IController } from '@interfaces/global';
 import { singleton } from 'tsyringe';
 import { AuthMiddleware } from '@middleware/auth.middleware';

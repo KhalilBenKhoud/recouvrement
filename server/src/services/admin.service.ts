@@ -16,7 +16,27 @@ export class AdminService {
 		this._invoiceRepository = _connection.getRepository(Invoice);
 	}
 
-	getUsers() {
-		return [] as User[];
+	addInvoice(input: Partial<Invoice>): Promise<Invoice> {
+		return this._invoiceRepository.save(input);
+	}
+
+	getUsers(page: number, perPage: number = 8): Promise<User[]> {
+		return this._userRepository.find({
+			order: {
+				createdAt: 'DESC',
+			},
+			skip: perPage * (page - 1),
+			take: perPage,
+		});
+	}
+
+	getInvoices(page: number, perPage: number = 8): Promise<Invoice[]> {
+		return this._invoiceRepository.find({
+			order: {
+				createdAt: 'DESC',
+			},
+			skip: perPage * (page - 1),
+			take: perPage,
+		});
 	}
 }

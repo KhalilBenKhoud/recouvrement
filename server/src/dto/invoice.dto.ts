@@ -1,8 +1,13 @@
 import { UserResponseDto } from './auth.dto';
 import { InvoiceStatus } from '@entities/Invoice';
-import { IsEnum, IsIdentityCard, IsObject, IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 
-import { IsNullable } from '@validators/global.validator';
+import { IsNullable, IsValidDateRange } from '@validators/global.validator';
+
+interface DateRange {
+	minDate?: Date;
+	maxDate?: Date;
+}
 
 export class InvoiceFiltersQuery {
 	@IsNullable()
@@ -13,11 +18,8 @@ export class InvoiceFiltersQuery {
 	@IsString()
 	category?: string | null;
 
-	//isDateRange()
-	dateRange?: {
-		minDate: Date;
-		maxDate: Date;
-	};
+	@IsValidDateRange()
+	dateRange?: DateRange;
 }
 
 export class InvoiceResponseDto {

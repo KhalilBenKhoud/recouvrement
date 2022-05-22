@@ -35,21 +35,11 @@ export class MainController implements IController {
 		}
 	}
 
-	private async getInvoices(req: Request, res: Response, next: NextFunction) {}
-
-	private async getDebts(req: Request, res: Response, next: NextFunction) {}
-
 	initRoutes(): void {
-		//all these routes needs authentication
-		this._router.use(
-			this._authMiddleware.authenticate.call(this._authMiddleware),
-		);
 		this._router.get(
 			'/profile',
-			this._authMiddleware.authenticate,
+			this._authMiddleware.authenticate.call(this._authMiddleware),
 			this.getProfile,
 		);
-		this._router.get('/debts', this._authMiddleware.authenticate);
-		this._router.get('/invoices/all', this._authMiddleware.authenticate);
 	}
 }

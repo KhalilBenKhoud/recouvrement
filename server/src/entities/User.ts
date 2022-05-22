@@ -22,8 +22,8 @@ export class User extends BaseEntity {
 	@Column({ name: 'last_name' })
 	lastName: string;
 
-	@Column({ unique: true })
-	cin: number;
+	@Column({ unique: true, length: 8 })
+	cin: string;
 
 	@Column({ unique: true })
 	email: string;

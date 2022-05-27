@@ -8,14 +8,14 @@ const Requests = () => {
     const [object,setObject] = useState("")
     return (
     <section id="requests">
-    <label htmlFor="objet">Objet :</label>
+    <h1>Objet :</h1>
     <input type="text" id="objet" onChange={
        (e) => {
         setObject(e.target.value)
         console.log(object);
     }  
     }/>
-     <label htmlFor="plainte"> Contenu : </label>
+     <h1> Contenu : </h1>
      <span>
      <textarea id="plainte" rows="10" cols="50" onChange={
          (e) => {

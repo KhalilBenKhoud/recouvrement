@@ -31,6 +31,62 @@ function Table({ invoices }) {
 			category: 'Internet',
 			status: 1,
 		},
+		{
+			id: 1,
+			title: 'Test king',
+			value: 34.2,
+			category: 'Internet',
+			status: 0,
+		},
+		{
+			id: 1,
+			title: 'Test king',
+			value: 34.2,
+			category: 'Internet',
+			status: 2,
+		},
+		{
+			id: 1,
+			title: 'Test king',
+			value: 34.2,
+			category: 'Internet',
+			status: 0,
+		},
+		{
+			id: 1,
+			title: 'Test king',
+			value: 34.2,
+			category: 'Internet',
+			status: 1,
+		},
+		{
+			id: 1,
+			title: 'Test king',
+			value: 34.2,
+			category: 'Internet',
+			status: 0,
+		},
+		{
+			id: 1,
+			title: 'Test king',
+			value: 34.2,
+			category: 'Internet',
+			status: 2,
+		},
+		{
+			id: 1,
+			title: 'Test king',
+			value: 34.2,
+			category: 'Internet',
+			status: 0,
+		},
+		{
+			id: 1,
+			title: 'Test king',
+			value: 34.2,
+			category: 'Internet',
+			status: 1,
+		},
 	];
 	return (
 		<div className='w-3/4 h-full bg-white shadow-lg rounded-sm border border-slate-200'>

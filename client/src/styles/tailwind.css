@@ -90,15 +90,7 @@ abbr:where([title]) {
 Remove the default font size and weight for headings.
 */
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: inherit;
-  font-weight: inherit;
-}
+
 
 /*
 Reset links to optimize for opt-in styling instead of opt-out.
@@ -182,33 +174,6 @@ table {
 3. Remove default padding in all browsers.
 */
 
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: inherit;
-  /* 1 */
-  font-size: 100%;
-  /* 1 */
-  line-height: inherit;
-  /* 1 */
-  color: inherit;
-  /* 1 */
-  margin: 0;
-  /* 2 */
-  padding: 0;
-  /* 3 */
-}
-
-/*
-Remove the inheritance of text transform in Edge and Firefox.
-*/
-
-button,
-select {
-  text-transform: none;
-}
 
 /*
 1. Correct the inability to style clickable types in iOS and Safari.
@@ -1056,7 +1021,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 #create {
   background-color: rgb(249, 250, 251);
-  min-height: 160vh;
+  min-height: 170vh;
   position: relative;
 }
 
@@ -1172,6 +1137,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 #link {
   text-decoration: none;
+  color: indigo ;
 }
 
 #link:hover {
@@ -1233,6 +1199,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 #requests {
   gap: 20px;
+  color : black ;
+}
+#requests > h1  {
+  color : white ;
 }
 
 .sidebar {
@@ -1433,7 +1403,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   outline: none;
   box-shadow: 0 0 0 3px rgba(202, 191, 253, 0.45);
 }
-
+.plaintes > h1 {
+  color : white ;
+}
 .plaintes {
   align-self: flex-start;
   margin-left: 30px;
@@ -1622,4 +1594,25 @@ Ensure the default browser behavior of the `hidden` attribute.
   .xs\:mt-0{
     margin-top: 0px;
   }
+}
+
+
+.menu  {
+  width: 150px;
+  height: 100px;
+  background-color: gainsboro;
+  position: absolute;
+  top : 100% ;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.menu > *:hover {
+  background-color: rgba(128, 128, 128, 0.63);
+}
+
+.menu > * {
+  height: 100%;
 }
